@@ -40,7 +40,6 @@
         <collection property="courses" ofType="course">
             <result property="title" column="title"/>
         </collection>
-
     </resultMap>
     <select id="queryCoursesByStudentId" parameterType="int" resultMap="queryCoursesByStudentId_map">
         SELECT
@@ -48,9 +47,9 @@
             c.title
         FROM db_sc.student s
             LEFT JOIN db_sc.student_course sc
-        ON s.id = sc.studentId
-
-
-        WHERE s.id=#{id}
+                ON s.id = sc.studentId
+            LEFT JOIN db_sc.course c
+                ON c.id = sc.courseId
+        WHERE s.id = #{id}
     </select>
 </mapper>

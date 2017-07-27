@@ -52,4 +52,10 @@ public class CourseController extends BaseController {
         session.setAttribute("course", courseService.queryById(id));
         return "redirect:/course/edit.jsp";
     }
+
+    @RequestMapping("queryStudentsByCourseId/{id}")
+    private String queryStudentsByCourseId(@PathVariable int id) {
+        session.setAttribute("course", courseService.query("queryStudentsByCourseId", id));
+        return "redirect:/course/students.jsp";
+    }
 }

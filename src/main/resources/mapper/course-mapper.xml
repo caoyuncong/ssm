@@ -6,11 +6,11 @@
 <mapper namespace="course">
     <insert id="create" parameterType="course" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO db_sc.course (
-            title, 
+            title,
             credit
         )
         VALUES (
-            #{title}, 
+            #{title},
             #{credit}
         )
     </insert>
@@ -21,7 +21,7 @@
     <update id="modify">
         UPDATE db_sc.course
         SET
-            title = #{title}, 
+            title  = #{title},
             credit = #{credit}
         WHERE course.id = #{id}
     </update>
@@ -34,5 +34,23 @@
         SELECT *
         FROM db_sc.course
         WHERE course.id = #{id}
+    </select>
+
+    <resultMap id="queryStudentsByCourseId_map" type="course">
+        <result property="title" column="title"/>
+        <collection property="students" ofType="student">
+            <result property="name" column="name"/>
+        </collection>
+    </resultMap>
+    <select id="queryStudentsByCourseId" parameterType="int" resultMap="queryStudentsByCourseId_map">
+        SELECT
+            c.title,
+            s.name
+        FROM db_sc.course c
+            LEFT JOIN db_sc.student_course sc
+                ON c.id = sc.courseId
+            LEFT JOIN db_sc.student s
+                ON sc.studentId = s.id
+        WHERE c.id = #{id};
     </select>
 </mapper>
